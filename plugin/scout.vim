@@ -1,7 +1,10 @@
+
 let g:scout = {
       \ "term_id": 0,
+      \ "job_id": 0,
       \ "open": 0,
-      \ "origin": 0
+      \ "origin": 0,
+      \ "vim_command": ":e"
       \ }
 
 function! s:ScoutOutput(term_id, data, event) dict
@@ -24,7 +27,7 @@ function! s:ScoutExit(term_id, data, event) dict
   " go back to the origin window
   call win_gotoid(g:scout.origin)
   if !empty(selection)
-    exec self.vim_command . " " . selection
+    exec g:scout.vim_command . " " . selection
   endif
 
   call s:ScoutCloseTerm()
@@ -34,9 +37,15 @@ function! s:ScoutCloseTerm()
   if g:scout.open == 1
     exec g:scout.term_id . "bdelete!"
     let g:scout.term_id = 0
+    let g:scout.job_id = 0
     let g:scout.open = 0
     let g:scout.origin = 0
   endif
+endfunction
+
+function! ScoutVSplit()
+  let g:scout.vim_command = ":vsplit"
+  call jobsend(g:scout.job_id, "\n")
 endfunction
 
 function! ScoutCommand(choice_command, vim_command)
@@ -51,10 +60,17 @@ function! ScoutCommand(choice_command, vim_command)
         \ 'on_stdout': function('s:ScoutOutput'),
         \ 'on_exit': function('s:ScoutExit')
         \ }
-  call termopen(a:choice_command . ' | scout ', extend({'output': [], 'vim_command': a:vim_command}, s:callbacks))
+  let job_id = termopen(a:choice_command . ' | scout ', extend({'output': [], 'vim_command': a:vim_command}, s:callbacks))
+
   let g:scout.term_id = bufnr("")
-  let g:scout.open = 1
-  let g:scout.origin = origin
+  let g:scout.job_id  = job_id
+  let g:scout.open    = 1
+  let g:scout.origin  = origin
+  let g:scout.vim_command = ":e"
+
+  " mappings
+  tnoremap <buffer> <c-v> <C-\><C-n>:call ScoutVSplit()<cr>
+
   startinsert
 endfunction
 
