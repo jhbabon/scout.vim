@@ -36,12 +36,16 @@ function! s:ScoutCloseTerm()
 endfunction
 
 function! ScoutCommand(choice_command, vim_command)
+  " First create a new split
+  exec "botright new"
+
+  " In the new split, create the term
   let s:callbacks = {
         \ 'on_stdout': function('s:ScoutOutput'),
         \ 'on_exit': function('s:ScoutExit')
         \ }
-  let termid = termopen(a:choice_command . ' | scout ', extend({'output': [], 'vim_command': a:vim_command}, s:callbacks))
-  let g:scout.term_id = termid
+  call termopen(a:choice_command . ' | scout ', extend({'output': [], 'vim_command': a:vim_command}, s:callbacks))
+  let g:scout.term_id = bufnr("")
   let g:scout.open = 1
   startinsert
 endfunction
