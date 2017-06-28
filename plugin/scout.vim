@@ -1,11 +1,7 @@
-augroup terminal
-        autocmd!
-        autocmd TermClose * call s:ScoutCloseTerm()
-augroup end
-
 let g:scout = {
       \ "term_id": 0,
-      \ "open": 0
+      \ "open": 0,
+      \ "origin": 0
       \ }
 
 function! s:ScoutOutput(term_id, data, event) dict
@@ -13,6 +9,7 @@ function! s:ScoutOutput(term_id, data, event) dict
 endfunction
 
 function! s:ScoutExit(term_id, data, event) dict
+  let selection = ""
   if a:data == 0
     let selection = self.output[0]
 
@@ -22,20 +19,30 @@ function! s:ScoutExit(term_id, data, event) dict
     " Remove the escape sequence to change the terminal ^[[1049l
     let selection = substitute(selection, '[[:escape]]', '', 'g')
     let selection = substitute(selection, '[?1049l', '', 'g')
+  endif
+
+  " go back to the origin window
+  call win_gotoid(g:scout.origin)
+  if !empty(selection)
     exec self.vim_command . " " . selection
   endif
+
+  call s:ScoutCloseTerm()
 endfunction
 
 function! s:ScoutCloseTerm()
   if g:scout.open == 1
-    echom g:scout.term_id
     exec g:scout.term_id . "bdelete!"
     let g:scout.term_id = 0
     let g:scout.open = 0
+    let g:scout.origin = 0
   endif
 endfunction
 
 function! ScoutCommand(choice_command, vim_command)
+  " get origin window
+  let origin = exists('*win_getid') ? win_getid() : 0
+
   " First create a new split
   exec "botright new"
 
@@ -47,6 +54,7 @@ function! ScoutCommand(choice_command, vim_command)
   call termopen(a:choice_command . ' | scout ', extend({'output': [], 'vim_command': a:vim_command}, s:callbacks))
   let g:scout.term_id = bufnr("")
   let g:scout.open = 1
+  let g:scout.origin = origin
   startinsert
 endfunction
 
