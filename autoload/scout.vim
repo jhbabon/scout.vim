@@ -6,23 +6,39 @@ function! scout#open(choices_command, callbacks)
   let s:origin_id = scout#get_origin_id()
   let s:command = a:choices_command . " | " . g:scout_command
 
-  let s:term_callbacks = {
+  let s:instance = {
         \ "parsers": [function("scout#parse")] + a:callbacks.parsers,
         \ "terminators": [function("scout#terminate")] + a:callbacks.terminators,
         \ "on_stdout": function("scout#on_stdout"),
         \ "on_exit": function("scout#on_exit"),
+        \ "signal": "open",
         \ "selection": ""
         \}
 
   " create new split
   exec "botright new"
-  let s:job_id = termopen(s:command, s:term_callbacks)
+  let s:job_id = termopen(s:command, s:instance)
 
   let g:scout.job_id = s:job_id
   let g:scout.origin_id = s:origin_id
   let g:scout.buffer_id = bufnr("")
 
+  call scout#mappings(s:instance)
+
   startinsert
+endfunction
+
+function! scout#mappings(instance)
+  let b:instance = a:instance
+
+  tnoremap <buffer> <c-v> <c-\><c-n>:call scout#signal(b:instance, "vsplit")<cr>
+  tnoremap <buffer> <c-x> <c-\><c-n>:call scout#signal(b:instance, "split")<cr>
+  tnoremap <buffer> <c-t> <c-\><c-n>:call scout#signal(b:instance, "tab")<cr>
+endfunction
+
+function! scout#signal(instance, signal)
+  let a:instance.signal = a:signal
+  call jobsend(g:scout.job_id, "\n")
 endfunction
 
 function! scout#on_stdout(term_id, data, event) dict

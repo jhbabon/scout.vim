@@ -13,11 +13,21 @@ function! scout#files#parse(selection, ...)
   return a:selection
 endfunction
 
-function! scout#files#terminate(selection, ...)
+function! scout#files#terminate(selection, instance)
   echom "scout#files#terminate : selection : " . a:selection
 
+  let signal = a:instance.signal
+
   if !empty(a:selection)
-    exec ":e " . a:selection
+    if signal == "vsplit"
+      exec ":vsplit " . a:selection
+    elseif signal == "split"
+      exec ":split " . a:selection
+    elseif signal == "tab"
+      exec ":tab split " . a:selection
+    else
+      exec ":e " . a:selection
+    endif
   endif
 
   return a:selection
