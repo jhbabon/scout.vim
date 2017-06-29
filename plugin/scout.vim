@@ -20,4 +20,5 @@ end
 
 " Set the main neovim Ex commands
 command! ScoutFiles call scout#files#run() " remove silent for debugging
+command! ScoutBuffers call scout#buffers#run() " remove silent for debugging
 " command! ScoutFiles silent call scout#files#run() " remove silent for debugging

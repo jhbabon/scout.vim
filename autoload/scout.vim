@@ -1,5 +1,5 @@
 function! scout#get_origin_id()
-  return exists('*win_getid') ? win_getid() : 0
+  return exists("*win_getid") ? win_getid() : 0
 endfunction
 
 function! scout#open(choices_command, callbacks)
