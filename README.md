@@ -30,3 +30,4 @@ See [scout][] inside [neovim][] in action:
 
 [scout]: https://github.com/jhbabon/scout
 [neovim]: https://github.com/neovim/neovim
+[vim-plug]: https://github.com/junegunn/vim-plug
