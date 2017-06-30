@@ -112,6 +112,10 @@ This plugin is under the MIT license.
 ===============================================================================
 CHANGELOG                                                      *scout-changelog*
 
+v1.0.1 - 2017-06-30~
+Fixed:
+- Add missing link to vim-plug to README
+
 v1.0.0 - 2017-06-30~
 Added:
 - Full integration with `scout` to search for files or buffers to edit. `scout`
