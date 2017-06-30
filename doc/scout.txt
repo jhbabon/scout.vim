@@ -1,0 +1,111 @@
+*scout* *scout.txt* *scout.vim*  Integration between neovim and scout fuzzy finder
+
+                ____   ____ ___  _   _ _______     _____ __  __ ~
+               / ___| / ___/ _ \| | | |_   _\ \   / /_ _|  \/  |~
+               \___ \| |  | | | | | | | | |  \ \ / / | || |\/| |~
+                ___) | |__| |_| | |_| | | |_  \ V /  | || |  | |~
+               |____/ \____\___/ \___/  |_(_)  \_/  |___|_|  |_|~
+
+
+===============================================================================
+TABLE OF CONTENTS                                                    *scout-toc*
+
+    INTRODUCTION  ........................................  |scout-introduction|
+    DEPENDENCIES  ........................................  |scout-dependencies|
+    USAGE  ......................................................  |scout-usage|
+    COMMANDS  ................................................  |scout-commands|
+    CONFIGURATION  ............ .......................... |scout-configuration|
+    LICENSE  ................................................... |scout-license|
+    CHANGELOG  ............................................... |scout-changelog|
+
+===============================================================================
+INTRODUCTION                                                *scout-introduction*
+
+This plugin allows you to use the `scout` fuzzy finder to quickly search
+for a file or buffer and open it.
+
+You can find more info about `scout` in its main page:
+
+*scout-main-page* https://github.com/jhbabon/scout
+
+To do the integration, this plugin uses Neovim's built it |terminal-emulator|
+
+===============================================================================
+DEPENDENCIES                                                *scout-dependencies*
+
+You need to install `scout` in your system. Follow the installation
+instructions in the |scout-main-page|
+
+===============================================================================
+USAGE                                                              *scout-usage*
+
+You can start up `scout` at any moment by calling the command `:ScoutFiles`
+(or `:ScoutBuffers`). This will bring up a new buffer with `scout` running with
+a list of files or buffers. Once you select a choice from the list, you can
+just hit enter and the file (or buffer) will open in the same window you where
+before starting `scout`.
+
+If you want to open your selection in a different window, instead of pressing
+enter you can use one of the following mappings:
+
+  - Press <c-x> to open your selection in a horizontal split window.
+  - Press <c-v> to open your selection in a vertical split window.
+  - Press <c-t> to open your selection in a new tab.
+
+You can map these commands so its faster to use them
+>
+     nnoremap <leader>sf :ScoutFiles<cr>
+     nnoremap <leader>sb :ScoutBuffers<cr>
+<
+===============================================================================
+COMMANDS                                                        *scout-commands*
+
+*:ScoutFiles*
+
+Start `scout` in a new buffer with a list of files in your current directory.
+The files are selected using the command defined in the
+`g:scout_find_files_command` config variable.
+
+*:ScoutBuffers*
+
+Start `scout` in a new buffer with a list of buffers. The list of buffers is
+the same as the one provided by the `:ls` command, with the same format.
+
+===============================================================================
+CONFIGURATION                                              *scout-configuration*
+
+*g:scout_find_files_command*
+
+Command line tool used to list all the files. The output of this command will
+be piped in to `scout`. Default: `"find * -type f"`
+
+Example: using `ripgrep`
+>
+    let g:scout_find_files_command = 'rg --files --hidden --follow --glob "!.git/*" 2>/dev/null'
+<
+*g:scout_command*
+
+What is the command to call `scout`. Default: `"scout"`
+
+If you have `scout` intalled in a custom path you can set up the command with
+the whole path using this variable. You could even use a different tool that
+works as `scout` if you want, like `selecta`.
+
+Example: using a full path for `scout`
+>
+    let g:scout_command = "/path/to/my/bin/scout"
+<
+
+Example: using a different tool
+>
+    let g:scout_command = "selecta"
+<
+===============================================================================
+LICENSE                                                          *scout-license*
+
+This plugin is under the MIT license.
+
+===============================================================================
+CHANGELOG                                                      *scout-changelog*
+
+vim:fo=:ts=8:sw=4:et:tw=78:norl:nosta:nosr:ft=help
