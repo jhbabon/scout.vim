@@ -1,3 +1,4 @@
+" Use scout to find a buffer to edit
 function! scout#buffers#run()
   let l:callbacks = {
         \ "parsers": [function("scout#buffers#parse")],
@@ -9,6 +10,10 @@ function! scout#buffers#run()
   call scout#open(l:choices_command, l:callbacks, "buffers")
 endfunction
 
+" Internal: Build a command that will print out the list of buffers
+"   so scout can use them.
+"
+" Return: String with the full command to execute in the shell
 function! scout#buffers#choices_command()
   let l:list = execute(":ls")
   let l:list = substitute(l:list, "'", "\'", "g")
@@ -16,16 +21,28 @@ function! scout#buffers#choices_command()
   return "echo '" . l:list . "'"
 endfunction
 
+" Internal: extract buffer number from a line with the format
+"   described in the :ls command
+"
+" Arg: selection  the line selected with scout
+"
+" Return: String with the number of the buffer to open
 function! scout#buffers#parse(selection, ...)
   let selection = substitute(a:selection, '^\(\d\+\).*', '\1', '')
-  echom "scout#buffers#parse : selection : " . selection
 
   return selection
 endfunction
 
+" Internal: Open the buffer selected with scout
+"
+" Note: the buffer will be opened in different ways depending on the
+"   signal sent to the scout job.
+"
+" Arg: selection  The number of the buffer selected with scout
+" Arg: instance  Dict representing the current job executing scout
+"
+" Return: the selection
 function! scout#buffers#terminate(selection, instance)
-  echom "scout#buffers#terminate : selection : " . a:selection
-
   let l:function_name = "scout#buffers#" . a:instance.signal
 
   if !empty(a:selection) && exists("*" . l:function_name)
@@ -36,18 +53,33 @@ function! scout#buffers#terminate(selection, instance)
   return a:selection
 endfunction
 
-function! scout#buffers#vsplit(filename)
-  execute ":vert sb " . a:filename
+" Internal: Open a buffer in a vertical split
+"
+" Arg: buffer_id  the ID of the buffer to open
+function! scout#buffers#vsplit(buffer_id)
+  execute ":vert sb " . a:buffer_id
 endfunction
 
-function! scout#buffers#split(filename)
-  execute ":sb " . a:filename
+" Internal: Open a buffer in a horizontal split
+"
+" Arg: buffer_id  the ID of the buffer to open
+function! scout#buffers#split(buffer_id)
+  execute ":sb " . a:buffer_id
 endfunction
 
-function! scout#buffers#tab(filename)
-  execute ":tab sb " . a:filename
+" Internal: Open a buffer in a new tab
+"
+" Arg: buffer_id  the ID of the buffer to open
+function! scout#buffers#tab(buffer_id)
+  execute ":tab sb " . a:buffer_id
 endfunction
 
-function! scout#buffers#edit(filename)
-  execute ":b " . a:filename
+" Internal: Open a buffer in the origin window
+"
+" The origin window is the window from where scout was called in the first
+" place
+"
+" Arg: buffer_id  the ID of the buffer to open
+function! scout#buffers#edit(buffer_id)
+  execute ":b " . a:buffer_id
 endfunction

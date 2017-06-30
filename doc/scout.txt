@@ -10,13 +10,13 @@
 ===============================================================================
 TABLE OF CONTENTS                                                    *scout-toc*
 
-    INTRODUCTION  ........................................  |scout-introduction|
-    DEPENDENCIES  ........................................  |scout-dependencies|
-    USAGE  ......................................................  |scout-usage|
-    COMMANDS  ................................................  |scout-commands|
-    CONFIGURATION  ............ .......................... |scout-configuration|
-    LICENSE  ................................................... |scout-license|
-    CHANGELOG  ............................................... |scout-changelog|
+  INTRODUCTION  ........................................  |scout-introduction|
+  DEPENDENCIES  ........................................  |scout-dependencies|
+  USAGE  ......................................................  |scout-usage|
+  COMMANDS  ................................................  |scout-commands|
+  CONFIGURATION  ......................................  |scout-configuration|
+  LICENSE  ..................................................  |scout-license|
+  CHANGELOG  ..............................................  |scout-changelog|
 
 ===============================================================================
 INTRODUCTION                                                *scout-introduction*
