@@ -8,6 +8,7 @@ if get(g:, "scout_loaded", 0)
 endif
 
 let g:scout_loaded = 1
+let g:scout_version = "1.0.0"
 
 let g:scout = {
       \ "buffer_id": 0,
@@ -31,3 +32,4 @@ endif
 " Set the main Ex commands
 command! ScoutFiles silent call scout#files#run()
 command! ScoutBuffers silent call scout#buffers#run()
+command! ScoutVersion :echo "scout.vim v" . g:scout_version

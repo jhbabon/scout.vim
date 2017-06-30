@@ -71,6 +71,10 @@ The files are selected using the command defined in the
 Start `scout` in a new buffer with a list of buffers. The list of buffers is
 the same as the one provided by the `:ls` command, with the same format.
 
+*:ScoutVersion*
+
+Show the current version of the plugin
+
 ===============================================================================
 CONFIGURATION                                              *scout-configuration*
 
@@ -107,5 +111,12 @@ This plugin is under the MIT license.
 
 ===============================================================================
 CHANGELOG                                                      *scout-changelog*
+
+v1.0.0 - 2017-06-30~
+Added:
+- Full integration with `scout` to search for files or buffers to edit. `scout`
+  is launched in a terminal buffer that will handle the user interaction.
+  Once the user selects a file or buffer, this will be opened in a window.
+  The terminal buffer will be removed once is closed.
 
 vim:fo=:ts=8:sw=4:et:tw=78:norl:nosta:nosr:ft=help

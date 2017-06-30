@@ -20,7 +20,7 @@ With [vim-plug][] you can install the plugin like this:
 Plug 'jhbabon/scout.vim'
 ```
 
-* Install the plugin with the command `:PlugInstall`
+* Install the plugin with the command `:PlugInstall`.
 
 ## Demo
 
