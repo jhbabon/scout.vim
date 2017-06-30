@@ -1,28 +1,37 @@
 function! scout#files#run()
-  let s:callbacks = {
+  let l:callbacks = {
         \ 'parsers': [],
         \ 'terminators': [function('scout#files#terminate')]
         \ }
 
-  call scout#open(g:scout_find_files_command, s:callbacks, "files")
+  call scout#open(g:scout_find_files_command, l:callbacks, "files")
 endfunction
 
 function! scout#files#terminate(selection, instance)
   echom "scout#files#terminate : selection : " . a:selection
 
-  let signal = a:instance.signal
+  let l:function_name = "scout#files#" . a:instance.signal
 
-  if !empty(a:selection)
-    if signal == "vsplit"
-      exec ":vsplit " . a:selection
-    elseif signal == "split"
-      exec ":split " . a:selection
-    elseif signal == "tab"
-      exec ":tab split " . a:selection
-    else
-      exec ":e " . a:selection
-    endif
+  if !empty(a:selection) && exists("*" . l:function_name)
+    let l:Fn = function(l:function_name)
+    call l:Fn(a:selection)
   endif
 
   return a:selection
+endfunction
+
+function! scout#files#vsplit(filename)
+  execute ":vsplit " . a:filename
+endfunction
+
+function! scout#files#split(filename)
+  execute ":split " . a:filename
+endfunction
+
+function! scout#files#tab(filename)
+  execute ":tab split " . a:filename
+endfunction
+
+function! scout#files#edit(filename)
+  execute ":e " . a:filename
 endfunction

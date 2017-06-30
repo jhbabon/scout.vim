@@ -1,19 +1,19 @@
 function! scout#buffers#run()
-  let s:callbacks = {
+  let l:callbacks = {
         \ "parsers": [function("scout#buffers#parse")],
         \ "terminators": [function("scout#buffers#terminate")]
         \ }
 
-  let s:choices_command = scout#buffers#choices_command()
+  let l:choices_command = scout#buffers#choices_command()
 
-  call scout#open(s:choices_command, s:callbacks, "buffers")
+  call scout#open(l:choices_command, l:callbacks, "buffers")
 endfunction
 
 function! scout#buffers#choices_command()
-  let s:list = execute(":ls")
-  let s:list = substitute(s:list, "'", "\'", "g")
+  let l:list = execute(":ls")
+  let l:list = substitute(l:list, "'", "\'", "g")
 
-  return "echo '" . s:list . "'"
+  return "echo '" . l:list . "'"
 endfunction
 
 function! scout#buffers#parse(selection, ...)
@@ -26,19 +26,28 @@ endfunction
 function! scout#buffers#terminate(selection, instance)
   echom "scout#buffers#terminate : selection : " . a:selection
 
-  let signal = a:instance.signal
+  let l:function_name = "scout#buffers#" . a:instance.signal
 
-  if !empty(a:selection)
-    if signal == "vsplit"
-      exec ":vert sb " . a:selection
-    elseif signal == "split"
-      exec ":sb " . a:selection
-    elseif signal == "tab"
-      exec ":tab sb " . a:selection
-    else
-      exec ":b " . a:selection
-    endif
+  if !empty(a:selection) && exists("*" . l:function_name)
+    let l:Fn = function(l:function_name)
+    call l:Fn(a:selection)
   endif
 
   return a:selection
+endfunction
+
+function! scout#buffers#vsplit(filename)
+  execute ":vert sb " . a:filename
+endfunction
+
+function! scout#buffers#split(filename)
+  execute ":sb " . a:filename
+endfunction
+
+function! scout#buffers#tab(filename)
+  execute ":tab sb " . a:filename
+endfunction
+
+function! scout#buffers#edit(filename)
+  execute ":b " . a:filename
 endfunction

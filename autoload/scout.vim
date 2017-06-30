@@ -3,31 +3,28 @@ function! scout#get_origin_id()
 endfunction
 
 function! scout#open(choices_command, callbacks, title)
-  let s:origin_id = scout#get_origin_id()
-  let s:command = a:choices_command . " | " . g:scout_command
+  let l:origin_id = scout#get_origin_id()
+  let l:command = a:choices_command . " | " . g:scout_command
 
-  let s:instance = {
+  let l:instance = {
         \ "parsers": [function("scout#parse")] + a:callbacks.parsers,
         \ "terminators": [function("scout#terminate")] + a:callbacks.terminators,
         \ "on_stdout": function("scout#on_stdout"),
         \ "on_exit": function("scout#on_exit"),
-        \ "signal": "open",
+        \ "signal": "edit",
         \ "selection": ""
         \}
 
   " create new split
   exec "botright new"
-  let s:job_id = termopen(s:command, s:instance)
+  let l:job_id = termopen(l:command, l:instance)
 
-  let g:scout.job_id = s:job_id
-  let g:scout.origin_id = s:origin_id
+  let g:scout.job_id = l:job_id
+  let g:scout.origin_id = l:origin_id
   let g:scout.buffer_id = bufnr("")
 
-  call scout#mappings(s:instance)
-
+  call scout#mappings(l:instance)
   call scout#ui(a:title)
-
-  startinsert
 endfunction
 
 function! scout#mappings(instance)
@@ -46,6 +43,8 @@ endfunction
 function! scout#ui(title)
   let b:term_title = "scout > " . a:title
   setlocal statusline=%{b:term_title}
+
+  startinsert
 endfunction
 
 function! scout#on_stdout(term_id, data, event) dict
