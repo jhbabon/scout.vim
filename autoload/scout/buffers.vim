@@ -6,7 +6,7 @@ function! scout#buffers#run()
 
   let s:choices_command = scout#buffers#choices_command()
 
-  call scout#open(s:choices_command, s:callbacks)
+  call scout#open(s:choices_command, s:callbacks, "buffers")
 endfunction
 
 function! scout#buffers#choices_command()

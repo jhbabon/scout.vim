@@ -4,7 +4,7 @@ function! scout#files#run()
         \ 'terminators': [function('scout#files#terminate')]
         \ }
 
-  call scout#open(g:scout_find_files_command, s:callbacks)
+  call scout#open(g:scout_find_files_command, s:callbacks, "files")
 endfunction
 
 function! scout#files#terminate(selection, instance)

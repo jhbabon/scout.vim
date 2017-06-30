@@ -2,7 +2,7 @@ function! scout#get_origin_id()
   return exists("*win_getid") ? win_getid() : 0
 endfunction
 
-function! scout#open(choices_command, callbacks)
+function! scout#open(choices_command, callbacks, title)
   let s:origin_id = scout#get_origin_id()
   let s:command = a:choices_command . " | " . g:scout_command
 
@@ -25,6 +25,8 @@ function! scout#open(choices_command, callbacks)
 
   call scout#mappings(s:instance)
 
+  call scout#ui(a:title)
+
   startinsert
 endfunction
 
@@ -39,6 +41,11 @@ endfunction
 function! scout#signal(instance, signal)
   let a:instance.signal = a:signal
   call jobsend(g:scout.job_id, "\n")
+endfunction
+
+function! scout#ui(title)
+  let b:term_title = "scout > " . a:title
+  setlocal statusline=%{b:term_title}
 endfunction
 
 function! scout#on_stdout(term_id, data, event) dict
