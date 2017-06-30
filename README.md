@@ -8,6 +8,20 @@ different windows.
 Check the [main documentation](doc/scout.txt) for more info about how to
 use it.
 
+## Installation
+
+I recommend you to use a plugin manager.
+
+With [vim-plug][] you can install the plugin like this:
+
+* Add this to your `~/.config/nvim/init.vim`
+
+```viml
+Plug 'jhbabon/scout.vim'
+```
+
+* Install the plugin with the command `:PlugInstall`
+
 ## Demo
 
 See [scout][] inside [neovim][] in action:
