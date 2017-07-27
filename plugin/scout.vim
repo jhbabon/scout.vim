@@ -8,7 +8,7 @@ if get(g:, "scout_loaded", 0)
 endif
 
 let g:scout_loaded = 1
-let g:scout_version = "v1.0.1"
+let g:scout_version = "v1.1.0"
 
 let g:scout = {
       \ "buffer_id": 0,
