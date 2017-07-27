@@ -139,7 +139,7 @@ endfunction
 " Return: String with the selection unchanged
 function! scout#terminate(selection, ...)
   call win_gotoid(g:scout.origin_id)
-  exec g:scout.buffer_id . "bdelete!"
+  exec g:scout.buffer_id . "bwipeout!"
 
   let g:scout.buffer_id = 0
   let g:scout.job_id = 0
