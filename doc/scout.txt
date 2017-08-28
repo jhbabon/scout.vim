@@ -89,7 +89,7 @@ Example: using `ripgrep`
 <
 *g:scout_command*
 
-What is the command to call `scout`. Default: `"scout"`
+What is the command to execute as `scout`. Default: `"scout"`
 
 If you have `scout` intalled in a custom path you can set up the command with
 the whole path using this variable. You could even use a different tool that
@@ -103,6 +103,15 @@ Example: using a full path for `scout`
 Example: using a different tool
 >
     let g:scout_command = "selecta"
+<
+*g:scout_size*
+
+Set the size of the `scout` buffer. If nothing is set if will use half of the
+window. Default, the empty string: `""`.
+
+Example: using a small buffer
+>
+    let g:scout_size = "20%"
 <
 ===============================================================================
 LICENSE                                                          *scout-license*
