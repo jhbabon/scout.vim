@@ -121,9 +121,17 @@ This plugin is under the MIT license.
 ===============================================================================
 CHANGELOG                                                      *scout-changelog*
 
+v1.2.0 - 2017-08-28~
+Added:
+- Set the size of the `scout` buffer with the new option `g:scout_size`.
+
+Changed:
+- The original sizes of the open windows are restored after closing the `scout`
+  buffer.
+
 v1.1.0 - 2017-07-27~
 Changed:
-- Don't delete scout buffer, wipeout it!
+- Don't delete scout buffer, wipe it!
 
 v1.0.1 - 2017-06-30~
 Fixed:
