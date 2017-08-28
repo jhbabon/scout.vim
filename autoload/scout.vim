@@ -26,6 +26,8 @@ function! scout#open(choices_command, callbacks, title)
         \ "selection": ""
         \}
 
+  let l:winres = [winrestcmd(), &lines, winnr('$')]
+
   " create new split
   exec "botright new"
   let l:job_id = termopen(l:command, l:instance)
@@ -33,6 +35,7 @@ function! scout#open(choices_command, callbacks, title)
   let g:scout.job_id = l:job_id
   let g:scout.origin_id = l:origin_id
   let g:scout.buffer_id = bufnr("")
+  let g:scout.winres = l:winres
 
   call scout#mappings(l:instance)
   call scout#ui(a:title)
@@ -144,6 +147,10 @@ function! scout#terminate(selection, ...)
   let g:scout.buffer_id = 0
   let g:scout.job_id = 0
   let g:scout.origin_id = 0
+
+  if g:scout.winres[1] >= &lines && g:scout.winres[2] == winnr('$')
+    execute g:scout.winres[0].g:scout.winres[0]
+  endif
 
   return a:selection
 endfunction
