@@ -24,6 +24,10 @@ if !exists("g:scout_command")
   let g:scout_command = "scout"
 endif
 
+if !exists("g:scout_size")
+  let g:scout_size = ""
+endif
+
 if !executable(g:scout_command)
   echoerr "[scout.vim][error] The command '" . g:scout_command . "' doesn't exist!"
   finish

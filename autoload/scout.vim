@@ -29,7 +29,7 @@ function! scout#open(choices_command, callbacks, title)
   let l:winres = [winrestcmd(), &lines, winnr('$')]
 
   " create new split
-  exec "botright new"
+  exec printf("botright%s new", g:scout_size)
   let l:job_id = termopen(l:command, l:instance)
 
   let g:scout.job_id = l:job_id
