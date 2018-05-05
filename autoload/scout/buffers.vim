@@ -1,13 +1,17 @@
-" Use scout to find a buffer to edit
-function! scout#buffers#run()
+" Use scout to find and open a buffer
+"
+" Args: options  A dict with the 'search' key.
+"   see scout#open() for more info about that option.
+function! scout#buffers#run(options)
   let l:callbacks = {
-        \ "parsers": [function("scout#buffers#parse")],
-        \ "terminators": [function("scout#buffers#terminate")]
-        \ }
+    \ "parsers": [function("scout#buffers#parse")],
+    \ "terminators": [function("scout#buffers#terminate")]
+  \ }
+  let l:options = extend(a:options, { 'callbacks': l:callbacks }, 'keep')
 
   let l:choices_command = scout#buffers#choices_command()
 
-  call scout#open(l:choices_command, l:callbacks, "buffers")
+  call scout#open(l:choices_command, l:options, "buffers")
 endfunction
 
 " Internal: Build a command that will print out the list of buffers

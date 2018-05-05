@@ -34,6 +34,6 @@ if !executable(g:scout_command)
 endif
 
 " Set the main Ex commands
-command! ScoutFiles silent call scout#files#run()
-command! ScoutBuffers silent call scout#buffers#run()
+command! -nargs=? ScoutFiles silent call scout#files#run({ 'search': <q-args> })
+command! -nargs=? ScoutBuffers silent call scout#buffers#run({ 'search': <q-args> })
 command! ScoutVersion :echo "scout.vim " . g:scout_version

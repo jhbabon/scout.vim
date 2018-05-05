@@ -57,6 +57,29 @@ You can map these commands so its faster to use them
      nnoremap <leader>sf :ScoutFiles<cr>
      nnoremap <leader>sb :ScoutBuffers<cr>
 <
+
+The commands `:ScoutFiles` and `:ScoutBuffers` accept an extra argument, a
+string, which will be used as the initial search term for scout.
+
+Example: starting `scout` with a default term to find buffers
+>
+    :ScoutBuffers .jsx
+<
+
+You can pass |expand| wildcards and expressions as part of the term to search.
+
+Example: starting `scout` in the current file directory
+>
+    :ScoutFiles %:h
+<
+
+This allows you to create more useful mappings:
+>
+     " search for files in current dir
+     nnoremap <leader>sfd :ScoutFiles %:h<cr>
+     " search for buffers for the current word
+     nnoremap <leader>sbc :ScoutBuffers <cword><cr>
+<
 ===============================================================================
 COMMANDS                                                        *scout-commands*
 
@@ -66,10 +89,18 @@ Start `scout` in a new buffer with a list of files in your current directory.
 The files are selected using the command defined in the
 `g:scout_find_files_command` config variable.
 
+If you pass a string to the command, it will be used as the initial search
+term in `scout`. You can use regular |expand| wildcards and expressions in the
+string.
+
 *:ScoutBuffers*
 
 Start `scout` in a new buffer with a list of buffers. The list of buffers is
 the same as the one provided by the `:ls` command, with the same format.
+
+If you pass a string to the command, it will be used as the initial search
+term in `scout`. You can use regular |expand| wildcards and expressions in the
+string.
 
 *:ScoutVersion*
 
@@ -120,6 +151,17 @@ This plugin is under the MIT license.
 
 ===============================================================================
 CHANGELOG                                                      *scout-changelog*
+
+Unreleased~
+Added:
+- Now you can start the `scout` buffer with an initial search term. This term
+  can use the same wildcards and expressions as in |expand|.
+
+Changed:
+- The functions `scout#files#fun` and `scout#buffers#run` now accept a dict
+  with the key `'search'`. This is the initial term to search.
+- The function `scout#open` changed its API. Now it accepts an `options` dict
+  which will hold the `'search'` term and the `'callbacks'`.
 
 v1.2.0 - 2017-08-28~
 Added:

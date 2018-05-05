@@ -1,11 +1,28 @@
 " Open a new scout buffer
 "
 " Arg: choices_command  The command that needs to be executed to get the
-"   list of choices for scout. This command will be piped in to scout.
+"   list of choices for scout. This command will be piped to scout.
 "
-" Arg: callbacks  A dict with the keys 'parsers' and 'terminators', both
-"   lists of funcrefs that will be exectuted during the on_stdout and
+" Arg: options  A dict with all possible options for scout. The expected
+"   keys are 'search' and 'callbacks' (see below).
+"
+" Arg: options.search  Scout can take a initial term to start filtering
+"   the list of choices with it. It can take that term with the '-s' option.
+"   With this option, options.search, you can pass this initial term to
+"   scout so the buffer will start filtering the choices with it right away.
+"   If the string is empty it will start with all the choices.
+"
+" Arg: options.callbacks  A dict with the keys 'parsers' and 'terminators',
+"   both lists of funcrefs that will be exectuted during the on_stdout and
 "   on_exit events as described in the job-control documentation.
+"
+"   For the on_stdout event the 'parsers' callbacks will be used.
+"   These callbacks will operate over the output of scout
+"   (e.g: cleaning any special char).
+"
+"   For the on_exit event the 'terminators' callbacks will be used.
+"   These callbacks will operate once scout has finished. They are used
+"   to open buffers or new windows.
 "
 "   These functions (i.e: all the parsers) will be executed one after
 "   another and they will receive the output of the previous function.
@@ -13,18 +30,28 @@
 "   the job executing scout in a terminal buffer.
 "
 " Arg: title  What is the title to put in the statusline of the buffer
-function! scout#open(choices_command, callbacks, title)
+function! scout#open(choices_command, options, title)
   let l:origin_id = scout#get_origin_id()
-  let l:command = a:choices_command . " | " . g:scout_command
+  let l:defaults = {
+    \ 'search': '',
+    \ 'callbacks': {
+      \ 'parsers': [],
+      \ 'terminators': [],
+    \ }
+  \}
+  let l:options = extend(a:options, l:defaults, 'keep')
+  let l:search = scout#search_option(l:options.search)
+
+  let l:command = a:choices_command . " | " . g:scout_command . l:search
 
   let l:instance = {
-        \ "parsers": [function("scout#parse")] + a:callbacks.parsers,
-        \ "terminators": [function("scout#terminate")] + a:callbacks.terminators,
-        \ "on_stdout": function("scout#on_stdout"),
-        \ "on_exit": function("scout#on_exit"),
-        \ "signal": "edit",
-        \ "selection": ""
-        \}
+    \ "parsers": [function("scout#parse")] + l:options.callbacks.parsers,
+    \ "terminators": [function("scout#terminate")] + l:options.callbacks.terminators,
+    \ "on_stdout": function("scout#on_stdout"),
+    \ "on_exit": function("scout#on_exit"),
+    \ "signal": "edit",
+    \ "selection": ""
+  \}
 
   let l:winres = [winrestcmd(), &lines, winnr('$')]
 
@@ -39,6 +66,24 @@ function! scout#open(choices_command, callbacks, title)
 
   call scout#mappings(l:instance)
   call scout#ui(a:title)
+endfunction
+
+" Internal: Build the search option for scout from a given string.
+"
+" Arg: term  The string to be searched. It can be an empty string.
+"   The string will be expanded with the expand() function so it can
+"   contain valid VIM expand() expressions.
+"
+" Return: A string with the search argument for scout. It will be
+"   empty if there is nothing to search.
+function! scout#search_option(term)
+  if empty(a:term) == 0 " empty returns 1 if is true ¯\_(ツ)_/¯
+    let l:search = " -s " . expand(a:term)
+  else
+    let l:search = ""
+  endif
+
+  return l:search
 endfunction
 
 " Internal: Get the the ID of the calling window

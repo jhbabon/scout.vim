@@ -1,11 +1,15 @@
 " Use scout to find a file to edit
-function! scout#files#run()
+"
+" Args: options  A dict with the 'search' key.
+"   see scout#open() for more info about that option.
+function! scout#files#run(options)
   let l:callbacks = {
-        \ 'parsers': [],
-        \ 'terminators': [function('scout#files#terminate')]
-        \ }
+    \ 'parsers': [],
+    \ 'terminators': [function('scout#files#terminate')]
+  \ }
+  let l:options = extend(a:options, { 'callbacks': l:callbacks }, 'keep')
 
-  call scout#open(g:scout_find_files_command, l:callbacks, "files")
+  call scout#open(g:scout_find_files_command, l:options, "files")
 endfunction
 
 " Internal: Open the file selected with scout
