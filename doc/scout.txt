@@ -152,7 +152,7 @@ This plugin is under the MIT license.
 ===============================================================================
 CHANGELOG                                                      *scout-changelog*
 
-Unreleased~
+v2.0.0 - 2018-05-05~
 Added:
 - Now you can start the `scout` buffer with an initial search term. This term
   can use the same wildcards and expressions as in |expand|.
