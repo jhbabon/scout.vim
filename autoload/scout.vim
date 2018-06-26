@@ -1,3 +1,6 @@
+let s:new_tty = '?1049h'
+let s:return_tty = '?1049l'
+
 " Open a new scout buffer
 "
 " Arg: choices_command  The command that needs to be executed to get the
@@ -50,7 +53,9 @@ function! scout#open(choices_command, options, title)
     \ "on_stdout": function("scout#on_stdout"),
     \ "on_exit": function("scout#on_exit"),
     \ "signal": "edit",
-    \ "selection": ""
+    \ "selection": "",
+    \ "raw_output": "",
+    \ "collect_output": v:false
   \}
 
   let l:winres = [winrestcmd(), &lines, winnr('$')]
@@ -135,25 +140,37 @@ endfunction
 
 " Internal: callback executed whenever scout prints something out.
 "
-" This callback will execute all the defined parsers in order to
-" process the output of scout. This could mean to remove special chars
-" or to transform a complex line into the argument needed to open a new
-" buffer.
+" We will collect scout output but only the output printed to the
+" original TTY
 function! scout#on_stdout(term_id, data, event) dict
-  let self.selection = scout#apply_callbacks(self.parsers, a:data[0], self)
+  if self.collect_output || match(a:data[0], s:return_tty) != -1
+    let self.collect_output = v:true
+    let self.raw_output .= a:data[0]
+  endif
 endfunction
 
 " Internal: callback executed whenever scout exits.
 "
-" This callback will execute all the defined terminators in order to
+" This callback will first execute all the defined parsers in order to
+" process the output of scout. This could mean to remove special chars
+" or to transform a complex line into the argument needed to open a new
+" buffer.
+"
+" Then it will execute all the defined terminators in order to
 " perform an action with the choice selected with scout, like opening
 " a file in a new window or tab.
 function! scout#on_exit(term_id, data, event) dict
-  " Scout had an error, so we remove any selection to prevent
-  " any processing
-  if a:data != 0
+  if a:data == 0
+    let l:output = split(self.raw_output, s:return_tty)
+    let self.selection = scout#apply_callbacks(self.parsers, l:output[1], self)
+  else
+    " Scout had an error, so we remove any selection to prevent
+    " any processing
     let self.selection = ""
   endif
+
+  let self.raw_output = "" " reset the global raw registry
+  let self.collect_output = v:false
 
   call scout#apply_callbacks(self.terminators, self.selection, self)
 endfunction
@@ -171,8 +188,8 @@ function! scout#parse(selection, ...)
 
   " Remove the escape sequence to change the terminal ^[[1049l
   let selection = substitute(selection, '^[[:escape]]', '', 'g')
-  let selection = substitute(selection, '^[?1049l', '', 'g')
-  let selection = substitute(selection, '^[?1049h', '', 'g')
+  let selection = substitute(selection, '^[' . s:return_tty, '', 'g')
+  let selection = substitute(selection, '^[' . s:new_tty, '', 'g')
 
   return selection
 endfunction

@@ -32,7 +32,7 @@ endfunction
 "
 " Return: String with the number of the buffer to open
 function! scout#buffers#parse(selection, ...)
-  let selection = substitute(a:selection, '^\(\d\+\).*', '\1', '')
+  let selection = substitute(a:selection, '^\s*\(\d\+\).*', '\1', '')
 
   return selection
 endfunction
