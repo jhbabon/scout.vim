@@ -152,6 +152,14 @@ This plugin is under the MIT license.
 ===============================================================================
 CHANGELOG                                                      *scout-changelog*
 
+Unreleased~
+Fixed:
+- In neovim 0.3 how the output is sent to the job/terminal process has
+  changed and this change prevented the plugin to pass scout's output to
+  the internal functions that would open the file/buffer. Now the plugin will
+  collect scout's output all the time and get the final selection at scout's
+  exit. This works in neovim 0.3 and 0.2.
+
 v2.0.0 - 2018-05-05~
 Added:
 - Now you can start the `scout` buffer with an initial search term. This term
