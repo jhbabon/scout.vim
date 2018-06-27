@@ -152,7 +152,7 @@ This plugin is under the MIT license.
 ===============================================================================
 CHANGELOG                                                      *scout-changelog*
 
-Unreleased~
+v2.0.1 - 2018-06-27~
 Fixed:
 - In neovim 0.3 how the output is sent to the job/terminal process has
   changed and this change prevented the plugin to pass scout's output to
