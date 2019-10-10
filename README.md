@@ -24,9 +24,13 @@ Plug 'jhbabon/scout.vim'
 
 ## Demo
 
-See [scout][] inside [neovim][] in action:
+See [scout][] inside [neovim][] in action with Neovim's floating window:
 
-[![asciicast](https://asciinema.org/a/vD6A8V2alTbf3o1t3N4TsoGqM.png)](https://asciinema.org/a/vD6A8V2alTbf3o1t3N4TsoGqM)
+[![asciicast](https://asciinema.org/a/273812.svg)](https://asciinema.org/a/273812)
+
+Or using a normal split window:
+
+[![asciicast](https://asciinema.org/a/126999.svg)](https://asciinema.org/a/126999)
 
 [scout]: https://github.com/jhbabon/scout
 [neovim]: https://github.com/neovim/neovim

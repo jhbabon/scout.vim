@@ -8,13 +8,18 @@ if get(g:, "scout_loaded", 0)
 endif
 
 let g:scout_loaded = 1
-let g:scout_version = "v2.0.1"
 
-let g:scout = {
-      \ "buffer_id": 0,
-      \ "job_id": 0,
-      \ "origin_id": 0
-      \ }
+if !exists("g:scout_window_type")
+  let g:scout_window_type = "split"
+else
+  if g:scout_window_type == 'floating' && !has('nvim-0.4')
+    echomsg "[scout.vim][warning] floating window option only works on neovim >= 0.4!"
+    echomsg "[scout.vim][warning] reverting option to 'split'"
+    let g:scout_window_type = "split"
+  endif
+endif
+
+let g:scout_version = "v2.0.1"
 
 if !exists("g:scout_find_files_command")
   let g:scout_find_files_command = "find * -type f"

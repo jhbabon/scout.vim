@@ -40,10 +40,10 @@ instructions in the |scout-main-page|
 USAGE                                                              *scout-usage*
 
 You can start up `scout` at any moment by calling the command `:ScoutFiles`
-(or `:ScoutBuffers`). This will bring up a new buffer with `scout` running with
-a list of files or buffers. Once you select a choice from the list, you can
-just hit enter and the file (or buffer) will open in the same window you where
-before starting `scout`.
+(or `:ScoutBuffers`). This will bring up a new window with `scout` running
+showing a list of files or buffers. Once you select a choice from the list,
+you can hit enter and the file (or buffer) will open in the same window you
+where before starting `scout`.
 
 If you want to open your selection in a different window, instead of pressing
 enter you can use one of the following mappings:
@@ -135,10 +135,26 @@ Example: using a different tool
 >
     let g:scout_command = "selecta"
 <
+*g:scout_window_type*
+
+Set the type of the `scout` window. It can be a split window or a floating
+window if you use Neovim >= 0.4.
+
+The values can be: `"split"` or `"floating"`.
+
+By default it is `"split"`.
+
+Example: using the floating window
+>
+    let g:scout_window_type = "floating"
+<
 *g:scout_size*
 
-Set the size of the `scout` buffer. If nothing is set if will use half of the
-window. Default, the empty string: `""`.
+Set the size of the `scout` split window. If nothing is set if will use half of the
+window. By default it is the empty string: `""`.
+
+Note: this option is only valid for the `"split"` value of the
+`g:scout_window_type` option.
 
 Example: using a small buffer
 >
