@@ -168,7 +168,7 @@ This plugin is under the MIT license.
 ===============================================================================
 CHANGELOG                                                      *scout-changelog*
 
-Unreleased~
+v2.1.0 - 2019-10-11~
 Added:
 - Now you can start `scout` in a floating |window| in Neovim >= 0.4. You can
   set the option `g:scout_window_type` to `floating` to enable this feature.
