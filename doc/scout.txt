@@ -168,6 +168,13 @@ This plugin is under the MIT license.
 ===============================================================================
 CHANGELOG                                                      *scout-changelog*
 
+Unreleased~
+Added:
+- Now you can start `scout` in a floating |window| in Neovim >= 0.4. You can
+  set the option `g:scout_window_type` to `floating` to enable this feature.
+  To keep the previous behavior, a split window, use the value `split`. This
+  is the default.
+
 v2.0.1 - 2018-06-27~
 Fixed:
 - In neovim 0.3 how the output is sent to the job/terminal process has
