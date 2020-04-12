@@ -19,7 +19,7 @@ else
   endif
 endif
 
-let g:scout_version = "v2.1.0"
+let g:scout_version = "v2.1.1"
 
 if !exists("g:scout_find_files_command")
   let g:scout_find_files_command = "find * -type f"
