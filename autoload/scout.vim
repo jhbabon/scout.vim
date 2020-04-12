@@ -88,16 +88,13 @@ endfunction
 " Internal: Build the search option for scout from a given string.
 "
 " Arg: term  The string to be searched. It can be an empty string.
-"   The string will be expanded with the expand() function so it can
-"   contain valid VIM expand() expressions.
 "
-" Return: A string with the search argument for scout. It will be
-"   empty if there is nothing to search.
+" Return: A string with the search argument for scout or empty otherwise.
 function! scout#search_option(term)
   let l:search = ""
 
   if empty(a:term) == v:false
-    let l:search = " -s " . expand(a:term)
+    let l:search = " -s " . a:term
   endif
 
   return l:search

@@ -168,6 +168,12 @@ This plugin is under the MIT license.
 ===============================================================================
 CHANGELOG                                                      *scout-changelog*
 
+v2.1.1 - 2020-04-12~
+Fixed:
+- Use the |expand| function when defining Ex commands so the search option is
+  expanded correctly before calling the scout command. The previous expansion
+  done inside the scout plugin wasn't working properly.
+
 v2.1.0 - 2019-10-11~
 Added:
 - Now you can start `scout` in a floating |window| in Neovim >= 0.4. You can
